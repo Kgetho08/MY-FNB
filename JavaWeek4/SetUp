@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <link rel="stylesheet" types="text/css"  href="Style.css">
+
+
+    </head>
+
+    <body>
+        <a href="Index.html">Back</a>
+      <p id="outputText"></p>
+       <script>
+        
+       </script>
+    </body>
+</html>
