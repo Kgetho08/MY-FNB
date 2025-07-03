@@ -24,11 +24,10 @@ function fetchContacts() {
         console.log(data);
     })
 }
-function displayOutput(data){
+function displayOutput(data) {
     let output = "<table>";
     for (let a in data) {
-        output +=`
-        <tr onclick="">
+        output += `<tr>
             <td><img src="${rootPath}controller/uploads/${data[a].avatar}" /></td>
             <td><h5>${data[a].Firstname}</h5></td>
             <td><h5>${data[a].Lastname}</h5></td>
@@ -39,8 +38,6 @@ function displayOutput(data){
 }
 function addContact() {
     window.open("add-contact.html", "_self");
-}
-function editContact(){
 }
         </script>
     </body>
