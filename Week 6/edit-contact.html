@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Contact</title>
+    
+</head>
+<body onload="getContact()">
+    <br/>
+    <a href="index.html">Go to Contacts</a>
+    <h2>Add Contact</h2>
+    <form id="editForm">
+        <label for="firstname">First Name</label>
+        <input type="text" id="name" name="firstname" id="firstname" readonly>
+
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="lastname" id="lastname" readonly>
+
+        <label for="email">Email Address</label>
+        <input type="text" id="email" name="email" readonly>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" readonly>
+
+        <label for="avatar" id="avatarLabel" hidden>Avatar</label>
+        <Input type="file" name="avatar" id="avatar" hidden><br/>
+
+        <button type="submit" id="submitForm" hidden>Add Contact</button>
+    </form>
+    <br/>
+    <button id="homeLink" type="button">Go Home </button>
+    <button id="edit-contact" type="button">Edit</button>
+    <button id="deleteContact" type="button">Delete</button>
+
+    <script src="config.js"></script>
+<script>
+var id=getId();
+document.getElementById("homelink").addEventListener('click' ,homelink);
+console.log("the id id : " + id);
+
+    function getId(){
+        var url=window.location.href;
+        var pos = url.search("=");
+        var id=url.slice(pos+1);
+        return id;
+    }
+
+    function getContact(){
+    fetch(rootpath + 'contoller/get-contacts/?id='+ id)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+displayOutput(data);
+    //DISPLAY CONTACT INFO
+    console.log(data);
+    })
+
+    function homeLink(){
+        window.open("index.html","_self");
+    }
+function displayOutput(data){
+    avatarImg=
+    <img src="${rootPath}/controller/uploads/${data[0].avatar}"/>
+    document.getElementById("avatarImage").innerHTML=avatarImg;
+    document.getElementById("firstname").value=data[0].firstname;
+    document.getElementById("lastname").values=data[0].lastname;
+    document.getElementById("phone").values=data[0].phone;
+    document.getElementById("email").values=data[0].email;
+    
+}
+}
+
+
+</script>
+</body>
+</html>
