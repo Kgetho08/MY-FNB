@@ -5,11 +5,11 @@
     <title>Add Contact</title>
     
 </head>
-<body onload="getContact()">
+<body onload="getContact()"> #this function is called when the page loads
     <br/>
-    <a href="index.html">Go to Contacts</a>
+    <a href="index.html">Go to Contacts</a> #this link takes you back to the contacts page
     <h2>Add Contact</h2>
-    <form id="editForm">
+    <form id="editForm"> #this form is used to edit the contact
         <label for="firstname">First Name</label>
         <input type="text" id="name" name="firstname" id="firstname" readonly>
 
@@ -34,19 +34,21 @@
 
     <script src="config.js"></script>
 <script>
-var id=getId();
+var id=getId(); ///this function gets the id from the url
 document.getElementById("homelink").addEventListener('click' ,homelink);
 document.getElementById("edit-contact").addEventListener('click', editContact)
+document.getElementById("submitForm").addEventListener('click', submitForm);
+document.getElementById("deleteContact").addEventListener('click', deleteContact);
 console.log("the id is : " + id);
 
-    function getId(){
+    function getId(){ ///this function gets the id from the url
         var url=window.location.href;
         var pos = url.search("=");
         var id=url.slice(pos+1);
         return id;
     }
 
-    function getContact(){
+    function getContact(){ ///this function gets the contact from the database using the id
     fetch(rootpath + 'contoller/get-contacts/?id='+ id)
     .then(function(response){
         return response.json();
@@ -60,7 +62,7 @@ displayOutput(data);
     function homeLink(){
         window.open("index.html","_self");
     }
-function displayOutput(data){
+function displayOutput(data){ ///this function displays the contact information in the form
     avatarImg=
     <img src="${rootPath}/controller/uploads/${data[0].avatar}"/>
     document.getElementById("avatarImage").innerHTML=avatarImg;
@@ -70,9 +72,64 @@ function displayOutput(data){
     document.getElementById("email").values=data[0].email;
     
 }
-        function editContact(){
-            document.getElementById("Firstname").readOnly=false
+        function editContact(){ ///this function enables the form fields for editing
+            document.getElementById("firstname").readOnly=false
+            document.getElementById("lastname").readOnly=false; 
+            document.getElementById("email").readOnly=false;
+            document.getElementById("phone").readOnly=false;
+            document.getElementById("avatar").hidden=false;
+            document.getElementById("avatar").hidden=false;
+            document.getElementById("submitForm").hidden=false;  
+
         }
+        function submitForm(e){ ///this function submits the form to edit the contact
+            
+            e.preventDefault();
+
+             const form= new FormData(document.guerySelector("editForm"));
+            form.append('apikey', apiKey);
+            form.append("id", id);
+
+            fetch(rootpath+'controller/edit-contact/',{
+                method: 'POST',
+                headers: { 'Accept': 'application/json, *.*'},
+
+                body: form
+            })
+            then(function(response){
+                return response.text();
+            })
+            then(function(data){
+                if (data == "1") {
+                    alert("Contact edited successfully");
+                    homeLink();
+                } else {
+                    alert("Error editing contact: " + data);
+                    homeLink();
+                }
+            })
+            
+        }
+        function deleteContact(){ ///this function deletes the contact
+            var confirmDelete = confirm("Are you sure you want to delete this contact?");
+            if (confirmDelete == true) {
+                fetch(rootpath + 'controller/delete-contact/?id=' + id + '&apikey=' + apiKey)
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(data){
+                    if (data == "1") {
+                        alert("Contact deleted successfully");
+                        homeLink();
+                    } else {
+                        alert("Error deleting contact: " + data);
+                    }
+                });
+            }
+           
+            
+        }   
+            
 }
 
 
